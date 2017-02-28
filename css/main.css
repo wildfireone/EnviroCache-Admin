@@ -12,4 +12,30 @@
    Author's custom styles
    ========================================================================== */
 
-#route-map { height: 400px; }
+#route-map { height: 500px; }
+
+
+
+.mlist{
+  padding-top: 30px;
+  min-height: 470px;
+}
+
+.btn {
+  margin: 5px;
+}
+
+.badgediv{
+  border-bottom: 1px solid;
+  display:block;
+}
+.routediv{
+  border-bottom: 1px solid;
+  display:block;
+}
+.routediv:hover {
+    background-color: #b0cff7;
+}
+.badgediv:hover {
+    background-color: #b0cff7;
+}

@@ -3,11 +3,20 @@
  * @Date:   27-Feb-172017
  * @Filename: main.js
 * @Last modified by:   john
-* @Last modified time: 27-Feb-172017
+* @Last modified time: 28-Feb-172017
  */
 
 
+$("#badge-list").hide();
 
+$("#badge-show").click(function(){
+  $("#badge-list").toggle();
+  $("#route-list").toggle();
+  $(this).text(function(i, text){
+          return text === "Show Badges" ? "Show Routes" : "Show Badges";
+      })
+
+});
 // initialize the map on the "map" div with a given center and zoom
 var routeMap = L.map('route-map', {
     center: [58.4621145, -3.4991727],
@@ -27,18 +36,7 @@ var testmaps = L.tileLayer('http://tiles.mapc.org/basemap/{z}/{x}/{y}.png', {
 });
 
 OpenStreetMap_Mapnik.addTo(routeMap);
-// Initialize Firebase
-var config = {
-    apiKey: "AIzaSyBQpfz-F4H8EcQXFmXSjVFCWcLJR3znVtM",
-    authDomain: "envirocache-232c1.firebaseapp.com",
-    databaseURL: "https://envirocache-232c1.firebaseio.com",
-    storageBucket: "envirocache-232c1.appspot.com",
-    messagingSenderId: "241058341316"
-};
-firebase.initializeApp(config);
 
-// Get a reference to the database service
-var database = firebase.database();
 
 var myStyle = {
     "color": "#00a3ff",
@@ -46,8 +44,16 @@ var myStyle = {
     "opacity": 0.65
 };
 
+var badgeStyle = {
+    "color": "#3ff6bf",
+    "weight": 5,
+    "opacity": 0.65
+};
+
 var routecount =0;
+var badgecount =0;
 var addedroutes =[];
+var addedbadges =[];
 var getroutes = database.ref('/routes').once('value').then(function(snapshot) {
     //map tp array from json object, yuk
     var routes = $.map(snapshot.val(), function(el) {
@@ -64,7 +70,44 @@ var getroutes = database.ref('/routes').once('value').then(function(snapshot) {
     });
 
 });
+var getbadges = database.ref('/badges').once('value').then(function(snapshot) {
+    //map tp array from json object, yuk
+    var badges = $.map(snapshot.val(), function(el) {
+        console.log(el);
+        //for(var i=0; i<routes.length;i++){
+        //try {
+            processBadge(el);
+            badgecount++;
+        //} catch (err) {
+        //    console.log("the geoJSON is wrong! " + err)
 
+        //}
+
+    });
+
+});
+
+var getusers = database.ref('/users').once('value').then(function(snapshot) {
+    //map tp array from json object, yuk
+    var content = "<table class='col-md-10'>";
+
+    var users = $.map(snapshot.val(), function(el) {
+        console.log(el);
+        //for(var i=0; i<routes.length;i++){
+        //try {
+        content+="<tr><td>"+el.username+"</td><td>"+el.score+"</td></tr>";
+        ///    processdata(el);
+
+        //} catch (err) {
+        //    console.log("the geoJSON is wrong! " + err)
+
+        //}
+
+    });
+    content += "</table>";
+    $("#leaderboard").append(content);
+
+});
 function processdata(route) {
     var child = route.child;
     var distance = route.distance;
@@ -120,6 +163,40 @@ function processdata(route) {
 
 
 }
+
+function processBadge(badge) {
+
+
+    var note = badge.note;
+    var title = badge.title;
+    var radius = badge.radius;
+
+
+    var coords = getCoords(badge.geoJSON);
+    var type = badge.geoJSON.geometry.type;
+
+    addedbadges.push(coords);
+
+
+    var geojsonFeature = {
+      "properties": {
+          "name": badge.title,
+          "note" : badge.note,
+          "title" : badge.title,
+          "popupContent": badge.title
+      }
+    }
+    var circle = L.circle(coords, radius, {style: badgeStyle}).addTo(routeMap);
+
+        $("#badge-list").append("<div id='badge"+routecount+"' class='badgediv'><strong>"+title+"</strong> <ul><li>description: "+note+"</li><ul> </div>" );
+        $(".badgediv").click(function() {
+          var index = $(this).index();
+          routeMap.setView(addedbadges[index], 14);
+        });
+
+
+}
+
 
 function getCoords(json) {
   var coords = json.geometry.coordinates;
