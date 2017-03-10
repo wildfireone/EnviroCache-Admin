@@ -3,7 +3,7 @@
  * @Date:   27-Feb-172017
  * @Filename: auth.js
 * @Last modified by:   john
-* @Last modified time: 28-Feb-172017
+* @Last modified time: 09-Mar-172017
  */
 
 
@@ -50,14 +50,14 @@ firebase.auth().onAuthStateChanged(function(user) {
         processUser(user);
 
         $("#welcome").text("Hello " + name);
-        $("#welcomep").text("Thanks for loggin in, you can now add Routes, Badges and look at the leaderboards");
+        $("#welcomep").text("Thanks for loging in, you can now add Routes, Badges and look at the leaderboards");
 
     } else {
         $(".signin").show();
         // No user is signed in.
         $(".content").hide();
         $("#welcome").text("Welcome to Envirocache");
-        $("#welcomep").text("Thanks for loggin in, you can now add Routes, Badges and look at the leaderboards");
+        $("#welcomep").text("You need to login to use this site");
     }
 });
 
@@ -116,7 +116,8 @@ $("#user-submit").click(function(){
     updates['/users/' + uid] = {
         "username": $("#username").val(),
         "type":"player",
-        "score": 0
+        "score": 0,
+        "badgeswon":{}
     };
     firebase.database().ref().update(updates);
       $("#myModalUser").modal("hide");

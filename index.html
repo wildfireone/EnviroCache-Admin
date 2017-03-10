@@ -3,7 +3,7 @@
 @Date:   27-Feb-172017
 @Filename: main.html
 @Last modified by:   john
-@Last modified time: 28-Feb-172017
+@Last modified time: 09-Mar-172017
 -->
 
 
@@ -56,9 +56,9 @@
                 <a class="navbar-brand" href="#">Envirocache</a>
             </div>
             <ul class="nav navbar-nav">
-                <li><a href="#">Routes</a></li>
-                <li><a href="#">Leaderboards</a></li>
-                <li><a href="#">Badges</a></li>
+                <li id="routelink"><a href="#route-list">Routes</a></li>
+                <li id="badgelink"><a href="#badge-list">Badges</a></li>
+                <li><a href="#leaderboard">Leaderboards</a></li>
             </ul>
             <div id="navbar" class="navbar-collapse collapse">
               <div class="navbar-form navbar-right" >
@@ -150,11 +150,11 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="r-difficulty">Difficulty</label>
-                                    <input type="numeric" class="form-control" id="r-difficulty" placeholder="1-5" />
+                                    <input type="number" class="form-control" id="r-difficulty" placeholder="1-5" />
                                     <label for="r-distance">Distance</label>
-                                    <input type="numeric" class="form-control" id="r-distance" placeholder="miles" />
+                                    <input type="number" class="form-control" id="r-distance" placeholder="miles" />
                                     <label for="timetaken">Time Taken</label>
-                                    <input type="r-numeric" class="form-control" id="r-timetaken" placeholder="hours" />
+                                    <input type="number" class="form-control" id="r-timetaken" placeholder="hours" />
                                 </div>
                                 <div class="checkbox">
                                     <label>
@@ -181,6 +181,12 @@
                 </button>
                             <button id="route-submit" type="button" class="btn btn-primary">
                     Save changes
+                </button>
+                <button id="route-delete" type="button" class="btn btn-primary">
+                  Delete
+                </button>
+                <button id="route-update" type="button" class="btn btn-primary">
+                  Update Changes
                 </button>
                         </div>
                     </div>
@@ -210,9 +216,19 @@
                                     <input type="text" class="form-control" id="badge-title" placeholder="Badge Name" />
                                 </div>
                                 <div class="form-group">
-                                    <label for="badge-desc">BadgeDescription</label>
+                                    <label for="badge-desc">Badge Description</label>
                                     <textarea id="badge-desc" placeholder="Badge Description" cols="75" rows="7"></textarea>
                                 </div>
+                                <div class="form-group">
+                                    <label for="badge-score">Badge Score</label>
+                                    <input type="number" class="form-control" id="badge-score" placeholder="Score" />
+                                </div>
+                                <div class="form-group">
+                                      <label for="file">Upload an Image</label>
+                                      <input type="file" id="files" name="files"/>
+
+                                </div>
+
                             </form>
                         </div>
 
@@ -220,10 +236,16 @@
                         <div class="modal-footer">
                             <button id="badge-cancel" type="button" class="btn btn-default" data-dismiss="modal">
                             Close
-                </button>
+                          </button>
                             <button id="badge-submit" type="button" class="btn btn-primary">
-                    Save changes
-                </button>
+                              Save changes
+                            </button>
+                            <button id="badge-delete" type="button" class="btn btn-primary">
+                              Delete
+                            </button>
+                            <button id="badge-update" type="button" class="btn btn-primary">
+                              Update Changes
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -332,10 +354,11 @@
     <script src="js/Leaflet.draw/src/edit/handler/Edit.Rectangle.js"></script>
     <script src="js/Leaflet.draw/src/edit/handler/Edit.Marker.js"></script>
     <script src="js/modalmap.js"></script>
+    <script src="js/imageupload.js"></script>
 
 
 
-    <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
+    <!-- Google Analytics: change UA-XXXXX-X to be your site's ID.
     <script>
         (function(b, o, i, l, e, r) {
             b.GoogleAnalyticsObject = l;
@@ -351,7 +374,7 @@
         }(window, document, 'script', 'ga'));
         ga('create', 'UA-XXXXX-X', 'auto');
         ga('send', 'pageview');
-    </script>
+    </script>-->
 </body>
 
 </html>
